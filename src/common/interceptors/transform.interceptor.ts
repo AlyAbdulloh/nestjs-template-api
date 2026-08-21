@@ -39,11 +39,16 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
 
         const hasMessage = data && typeof data === 'object' && 'message' in data;
         const message = hasMessage ? (data as any).message : 'Request successful';
-        
+
         let responseData = data;
         if (hasMessage) {
           const { message: _, ...rest } = data as any;
           responseData = Object.keys(rest).length > 0 ? rest : null;
+        }
+
+        // If responseData is an object that contains only 'data', unwrap it to avoid double nesting
+        if (responseData && typeof responseData === 'object' && 'data' in responseData && Object.keys(responseData).length === 1) {
+          responseData = responseData.data;
         }
 
         return {
