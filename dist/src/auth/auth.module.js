@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
 const prisma_module_1 = require("../prisma/prisma.module");
@@ -19,10 +20,17 @@ exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
             prisma_module_1.PrismaModule,
-            jwt_1.JwtModule.register({
+            jwt_1.JwtModule.registerAsync({
                 global: true,
-                secret: process.env.JWT_SECRET || 'danain_super_secret_jwt_key_2026',
-                signOptions: { expiresIn: (process.env.JWT_EXPIRES_IN || '1d') },
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: (config) => ({
+                    secret: config.getOrThrow("JWT_SECRET"),
+                    signOptions: {
+                        expiresIn: (config.get("JWT_EXPIRES_IN") ||
+                            "1d"),
+                    },
+                }),
             }),
         ],
         providers: [auth_service_1.AuthService],

@@ -1,21 +1,21 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from './users.service';
-import { DanainPrismaService } from 'src/prisma/danain/danain-prisma.service';
-import { ConflictException, NotFoundException } from '@nestjs/common';
-import { Role } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
+import { Test, TestingModule } from "@nestjs/testing";
+import { UsersService } from "./users.service";
+import { DanainPrismaService } from "../../prisma/danain/danain-prisma.service";
+import { ConflictException, NotFoundException } from "@nestjs/common";
+import { Role } from "@prisma/client";
+import * as bcrypt from "bcrypt";
 
-jest.mock('bcrypt');
+jest.mock("bcrypt");
 
-describe('UsersService', () => {
+describe("UsersService", () => {
   let service: UsersService;
   let prisma: DanainPrismaService;
 
   const mockUser = {
     id: 1,
-    email: 'test@example.com',
-    password: 'hashedpassword',
-    name: 'Test User',
+    email: "test@example.com",
+    password: "hashedpassword",
+    name: "Test User",
     role: Role.USER,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -49,27 +49,27 @@ describe('UsersService', () => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 
-  describe('create', () => {
-    it('should create a user successfully', async () => {
+  describe("create", () => {
+    it("should create a user successfully", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
-      (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpassword');
+      (bcrypt.hash as jest.Mock).mockResolvedValue("hashedpassword");
       mockPrismaService.user.create.mockResolvedValue({
         id: 1,
-        email: 'test@example.com',
-        name: 'Test User',
+        email: "test@example.com",
+        name: "Test User",
         role: Role.USER,
         createdAt: mockUser.createdAt,
         updatedAt: mockUser.updatedAt,
       });
 
       const dto = {
-        email: 'test@example.com',
-        password: 'password123',
-        name: 'Test User',
+        email: "test@example.com",
+        password: "password123",
+        name: "Test User",
         role: Role.USER,
       };
 
@@ -82,21 +82,21 @@ describe('UsersService', () => {
       expect(result.data.email).toBe(dto.email);
     });
 
-    it('should throw ConflictException if email exists', async () => {
+    it("should throw ConflictException if email exists", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(mockUser);
 
       const dto = {
-        email: 'test@example.com',
-        password: 'password123',
-        name: 'Test User',
+        email: "test@example.com",
+        password: "password123",
+        name: "Test User",
       };
 
       await expect(service.create(dto)).rejects.toThrow(ConflictException);
     });
   });
 
-  describe('findOne', () => {
-    it('should return a user if found', async () => {
+  describe("findOne", () => {
+    it("should return a user if found", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(mockUser);
 
       const result = await service.findOne(1);
@@ -108,15 +108,15 @@ describe('UsersService', () => {
       expect(result.data).toEqual(mockUser);
     });
 
-    it('should throw NotFoundException if user not found', async () => {
+    it("should throw NotFoundException if user not found", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
 
       await expect(service.findOne(999)).rejects.toThrow(NotFoundException);
     });
   });
 
-  describe('findAll', () => {
-    it('should return a paginated list of users', async () => {
+  describe("findAll", () => {
+    it("should return a paginated list of users", async () => {
       mockPrismaService.user.count.mockResolvedValue(1);
       mockPrismaService.user.findMany.mockResolvedValue([mockUser]);
 

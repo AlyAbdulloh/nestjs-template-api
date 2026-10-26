@@ -1,18 +1,30 @@
-import { INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
+import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { Test } from "@nestjs/testing";
+import request from "supertest";
+import { App } from "supertest/types";
+import { AppModule } from "./../src/app.module";
+import { DanainPrismaService } from "./../src/prisma/danain/danain-prisma.service";
+import { TransformInterceptor } from "./../src/common/interceptors/transform.interceptor";
 
-describe('AppController (e2e)', () => {
+describe("AppController (e2e)", () => {
   let app: INestApplication<App>;
 
   beforeAll(async () => {
+    process.env.JWT_SECRET = "e2e-test-secret";
+
     const moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(DanainPrismaService)
+      .useValue({ user: {}, $connect: jest.fn(), $disconnect: jest.fn() })
+      .compile();
 
     app = moduleFixture.createNestApplication();
+    app.setGlobalPrefix("api");
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: true, transform: true }),
+    );
+    app.useGlobalInterceptors(new TransformInterceptor());
     await app.init();
   });
 
@@ -20,10 +32,14 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  it('/ (GET)', () => {
+  it("GET /api/health returns a healthy status", () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get("/api/health")
       .expect(200)
-      .expect('Hello World!');
+      .expect((res) => {
+        expect(res.body.success).toBe(true);
+        expect(res.body.statusCode).toBe(200);
+        expect(res.body.data.status).toBe("ok");
+      });
   });
 });

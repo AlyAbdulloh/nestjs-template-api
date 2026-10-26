@@ -1,5 +1,5 @@
-import { NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { NestInterceptor, ExecutionContext, CallHandler } from "@nestjs/common";
+import { Observable } from "rxjs";
 export interface Response<T> {
     success: boolean;
     statusCode: number;

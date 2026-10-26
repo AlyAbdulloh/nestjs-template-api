@@ -14,21 +14,32 @@ let TransformInterceptor = class TransformInterceptor {
         const response = context.switchToHttp().getResponse();
         const statusCode = response.statusCode;
         return next.handle().pipe((0, operators_1.map)((data) => {
-            if (data && typeof data === 'object' && 'data' in data && 'meta' in data) {
+            if (data &&
+                typeof data === "object" &&
+                "data" in data &&
+                "meta" in data) {
                 return {
                     success: true,
                     statusCode,
-                    message: data.message || 'Request successful',
+                    message: data.message || "Request successful",
                     data: data.data,
                     meta: data.meta,
                 };
             }
-            const hasMessage = data && typeof data === 'object' && 'message' in data;
-            const message = hasMessage ? data.message : 'Request successful';
+            const hasMessage = data && typeof data === "object" && "message" in data;
+            const message = hasMessage
+                ? data.message
+                : "Request successful";
             let responseData = data;
             if (hasMessage) {
                 const { message: _, ...rest } = data;
                 responseData = Object.keys(rest).length > 0 ? rest : null;
+            }
+            if (responseData &&
+                typeof responseData === "object" &&
+                "data" in responseData &&
+                Object.keys(responseData).length === 1) {
+                responseData = responseData.data;
             }
             return {
                 success: true,

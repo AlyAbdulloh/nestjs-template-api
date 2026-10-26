@@ -1,31 +1,31 @@
-import { DanainPrismaService } from '../../prisma/danain/danain-prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PaginationQueryDto } from './dto/pagination-query.dto';
+import { DanainPrismaService } from "../../prisma/danain/danain-prisma.service";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { PaginationQueryDto } from "./dto/pagination-query.dto";
 export declare class UsersService {
     private danainDb;
     constructor(danainDb: DanainPrismaService);
-    get userModel(): import("@internal/prisma/danain").Prisma.UserDelegate<import("@internal/prisma/danain/runtime/library").DefaultArgs>;
+    get userModel(): import(".prisma/client").Prisma.UserDelegate<import("@prisma/client/runtime/library").DefaultArgs>;
     create(createUserDto: CreateUserDto): Promise<{
         message: string;
         data: {
+            id: number;
             email: string;
             name: string;
-            role: import("@internal/prisma/danain").$Enums.Role;
+            role: import(".prisma/client").$Enums.Role;
             createdAt: Date;
             updatedAt: Date;
-            id: number;
         };
     }>;
     findAll(query: PaginationQueryDto): Promise<{
         message: string;
         data: {
+            id: number;
             email: string;
             name: string;
-            role: import("@internal/prisma/danain").$Enums.Role;
+            role: import(".prisma/client").$Enums.Role;
             createdAt: Date;
             updatedAt: Date;
-            id: number;
         }[];
         meta: {
             total: number;
@@ -37,23 +37,23 @@ export declare class UsersService {
     findOne(id: number): Promise<{
         message: string;
         data: {
+            id: number;
             email: string;
             name: string;
-            role: import("@internal/prisma/danain").$Enums.Role;
+            role: import(".prisma/client").$Enums.Role;
             createdAt: Date;
             updatedAt: Date;
-            id: number;
         };
     }>;
     update(id: number, updateUserDto: UpdateUserDto): Promise<{
         message: string;
         data: {
+            id: number;
             email: string;
             name: string;
-            role: import("@internal/prisma/danain").$Enums.Role;
+            role: import(".prisma/client").$Enums.Role;
             createdAt: Date;
             updatedAt: Date;
-            id: number;
         };
     }>;
     remove(id: number): Promise<{

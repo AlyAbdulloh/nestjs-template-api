@@ -64,7 +64,7 @@ let AuthService = class AuthService {
             where: { email },
         });
         if (existingUser) {
-            throw new common_1.ConflictException('Email address is already in use');
+            throw new common_1.ConflictException("Email address is already in use");
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await this.userModel.create({
@@ -77,7 +77,7 @@ let AuthService = class AuthService {
         });
         const payload = { sub: user.id, email: user.email, role: user.role };
         return {
-            message: 'User registered successfully',
+            message: "User registered successfully",
             access_token: await this.jwtService.signAsync(payload),
         };
     }
@@ -87,15 +87,15 @@ let AuthService = class AuthService {
             where: { email },
         });
         if (!user) {
-            throw new common_1.UnauthorizedException('Invalid email or password');
+            throw new common_1.UnauthorizedException("Invalid email or password");
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            throw new common_1.UnauthorizedException('Invalid email or password');
+            throw new common_1.UnauthorizedException("Invalid email or password");
         }
         const payload = { sub: user.id, email: user.email, role: user.role };
         return {
-            message: 'Logged in successfully',
+            message: "Logged in successfully",
             access_token: await this.jwtService.signAsync(payload),
         };
     }

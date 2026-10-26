@@ -60,7 +60,7 @@ let UsersService = class UsersService {
             where: { email },
         });
         if (existingUser) {
-            throw new common_1.ConflictException('Email address is already in use');
+            throw new common_1.ConflictException("Email address is already in use");
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await this.userModel.create({
@@ -80,7 +80,7 @@ let UsersService = class UsersService {
             },
         });
         return {
-            message: 'User created successfully',
+            message: "User created successfully",
             data: user,
         };
     }
@@ -101,13 +101,13 @@ let UsersService = class UsersService {
                     updatedAt: true,
                 },
                 orderBy: {
-                    id: 'asc',
+                    id: "asc",
                 },
             }),
         ]);
         const totalPages = Math.ceil(total / limit);
         return {
-            message: 'Users fetched successfully',
+            message: "Users fetched successfully",
             data: items,
             meta: {
                 total,
@@ -133,7 +133,7 @@ let UsersService = class UsersService {
             throw new common_1.NotFoundException(`User with ID ${id} not found`);
         }
         return {
-            message: 'User fetched successfully',
+            message: "User fetched successfully",
             data: user,
         };
     }
@@ -148,7 +148,7 @@ let UsersService = class UsersService {
                 },
             });
             if (existingUser) {
-                throw new common_1.ConflictException('Email address is already in use');
+                throw new common_1.ConflictException("Email address is already in use");
             }
         }
         const dataToUpdate = { name, role };
@@ -170,7 +170,7 @@ let UsersService = class UsersService {
             },
         });
         return {
-            message: 'User updated successfully',
+            message: "User updated successfully",
             data: user,
         };
     }
@@ -180,7 +180,7 @@ let UsersService = class UsersService {
             where: { id },
         });
         return {
-            message: 'User deleted successfully',
+            message: "User deleted successfully",
         };
     }
 };

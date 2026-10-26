@@ -5,12 +5,12 @@ import {
   HttpException,
   HttpStatus,
   Logger,
-} from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+} from "@nestjs/common";
+import { Prisma } from "@prisma/client";
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  private readonly logger = new Logger('ExceptionsFilter');
+  private readonly logger = new Logger("ExceptionsFilter");
 
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -18,16 +18,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const request = ctx.getRequest();
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
-    let message = 'Internal server error';
+    let message = "Internal server error";
     let errors: any = null;
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const exceptionResponse = exception.getResponse();
-      if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
+      if (typeof exceptionResponse === "object" && exceptionResponse !== null) {
         const resMessage = (exceptionResponse as any).message;
         if (Array.isArray(resMessage)) {
-          message = 'Validation failed';
+          message = "Validation failed";
           errors = resMessage;
         } else {
           message = resMessage || message;
@@ -38,14 +38,17 @@ export class AllExceptionsFilter implements ExceptionFilter {
     } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
       // Prisma error mapping
       switch (exception.code) {
-        case 'P2002':
+        case "P2002": {
+          const target = Array.isArray(exception.meta?.target)
+            ? exception.meta.target
+            : [];
           status = HttpStatus.CONFLICT;
-          const fields = (exception.meta?.target as string[]) || [];
-          message = `Unique constraint failed on fields: ${fields.join(', ')}`;
+          message = `Unique constraint failed on fields: ${target.join(", ")}`;
           break;
-        case 'P2025':
+        }
+        case "P2025":
           status = HttpStatus.NOT_FOUND;
-          message = 'Record not found';
+          message = "Record not found";
           break;
         default:
           status = HttpStatus.BAD_REQUEST;
@@ -60,7 +63,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
       this.logger.error(
         `${request.method} ${request.url} - Error: ${message}`,
-        exception instanceof Error ? exception.stack : '',
+        exception instanceof Error ? exception.stack : "",
       );
     } else {
       this.logger.warn(

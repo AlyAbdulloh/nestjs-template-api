@@ -13,13 +13,16 @@ exports.JwtAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 const jwt_1 = require("@nestjs/jwt");
+const config_1 = require("@nestjs/config");
 const public_decorator_1 = require("../decorators/public.decorator");
 let JwtAuthGuard = class JwtAuthGuard {
     jwtService;
     reflector;
-    constructor(jwtService, reflector) {
+    config;
+    constructor(jwtService, reflector, config) {
         this.jwtService = jwtService;
         this.reflector = reflector;
+        this.config = config;
     }
     async canActivate(context) {
         const isPublic = this.reflector.getAllAndOverride(public_decorator_1.IS_PUBLIC_KEY, [
@@ -30,30 +33,35 @@ let JwtAuthGuard = class JwtAuthGuard {
             return true;
         }
         const request = context.switchToHttp().getRequest();
-        const token = this.extractTokenFromHeader(request);
+        const token = this.extractTokenFromRequest(request);
         if (!token) {
-            throw new common_1.UnauthorizedException('Missing authentication token');
+            throw new common_1.UnauthorizedException("Missing authentication token");
         }
         try {
-            const payload = await this.jwtService.verifyAsync(token, {
-                secret: process.env.JWT_SECRET || 'danain_super_secret_jwt_key_2026',
-            });
-            request['user'] = payload;
+            const payload = (await this.jwtService.verifyAsync(token, {
+                secret: this.config.getOrThrow("JWT_SECRET"),
+            }));
+            request.user = payload;
         }
         catch {
-            throw new common_1.UnauthorizedException('Invalid or expired authentication token');
+            throw new common_1.UnauthorizedException("Invalid or expired authentication token");
         }
         return true;
     }
-    extractTokenFromHeader(request) {
-        const [type, token] = request.headers.authorization?.split(' ') ?? [];
-        return type === 'Bearer' ? token : undefined;
+    extractTokenFromRequest(request) {
+        const [type, token] = request.headers.authorization?.split(" ") ?? [];
+        if (type === "Bearer") {
+            return token;
+        }
+        const cookieName = this.config.get("JWT_COOKIE_NAME") || "access_token";
+        return request.cookies?.[cookieName];
     }
 };
 exports.JwtAuthGuard = JwtAuthGuard;
 exports.JwtAuthGuard = JwtAuthGuard = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [jwt_1.JwtService,
-        core_1.Reflector])
+        core_1.Reflector,
+        config_1.ConfigService])
 ], JwtAuthGuard);
 //# sourceMappingURL=jwt-auth.guard.js.map

@@ -18,15 +18,18 @@ class LoginDto {
 }
 exports.LoginDto = LoginDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'admin@danain.com', description: 'User email address' }),
-    (0, class_validator_1.IsEmail)({}, { message: 'Please enter a valid email address' }),
-    (0, class_validator_1.IsNotEmpty)({ message: 'Email is required' }),
+    (0, swagger_1.ApiProperty)({
+        example: "admin@danain.com",
+        description: "User email address",
+    }),
+    (0, class_validator_1.IsEmail)({}, { message: "Please enter a valid email address" }),
+    (0, class_validator_1.IsNotEmpty)({ message: "Email is required" }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "email", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'admin123', description: 'User password' }),
+    (0, swagger_1.ApiProperty)({ example: "admin123", description: "User password" }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)({ message: 'Password is required' }),
+    (0, class_validator_1.IsNotEmpty)({ message: "Password is required" }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "password", void 0);
 //# sourceMappingURL=login.dto.js.map

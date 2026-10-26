@@ -16,7 +16,7 @@ const swagger_1 = require("@nestjs/swagger");
 let HealthController = class HealthController {
     check() {
         return {
-            status: 'ok',
+            status: "ok",
             timestamp: new Date().toISOString(),
         };
     }
@@ -25,14 +25,14 @@ exports.HealthController = HealthController;
 __decorate([
     (0, public_decorator_1.Public)(),
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Check API service health status' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'API is healthy' }),
+    (0, swagger_1.ApiOperation)({ summary: "Check API service health status" }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "API is healthy" }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], HealthController.prototype, "check", null);
 exports.HealthController = HealthController = __decorate([
-    (0, swagger_1.ApiTags)('Health'),
-    (0, common_1.Controller)('health')
+    (0, swagger_1.ApiTags)("Health"),
+    (0, common_1.Controller)("health")
 ], HealthController);
 //# sourceMappingURL=health.controller.js.map

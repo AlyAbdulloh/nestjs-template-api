@@ -34,11 +34,11 @@ let AuthController = class AuthController {
 exports.AuthController = AuthController;
 __decorate([
     (0, public_decorator_1.Public)(),
-    (0, common_1.Post)('register'),
-    (0, swagger_1.ApiOperation)({ summary: 'Register a new user' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'User successfully registered' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Validation failed' }),
-    (0, swagger_1.ApiResponse)({ status: 409, description: 'Email already exists' }),
+    (0, common_1.Post)("register"),
+    (0, swagger_1.ApiOperation)({ summary: "Register a new user" }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: "User successfully registered" }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: "Validation failed" }),
+    (0, swagger_1.ApiResponse)({ status: 409, description: "Email already exists" }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [register_dto_1.RegisterDto]),
@@ -46,19 +46,19 @@ __decorate([
 ], AuthController.prototype, "register", null);
 __decorate([
     (0, public_decorator_1.Public)(),
-    (0, common_1.Post)('login'),
+    (0, common_1.Post)("login"),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    (0, swagger_1.ApiOperation)({ summary: 'Authenticate user and generate JWT token' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Successfully authenticated' }),
-    (0, swagger_1.ApiResponse)({ status: 401, description: 'Invalid email or password' }),
+    (0, swagger_1.ApiOperation)({ summary: "Authenticate user and generate JWT token" }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "Successfully authenticated" }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Invalid email or password" }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_dto_1.LoginDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 exports.AuthController = AuthController = __decorate([
-    (0, swagger_1.ApiTags)('Authentication'),
-    (0, common_1.Controller)('auth'),
+    (0, swagger_1.ApiTags)("Authentication"),
+    (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

@@ -19,20 +19,30 @@ class RegisterDto {
 }
 exports.RegisterDto = RegisterDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'user@danain.com', description: 'User email address' }),
-    (0, class_validator_1.IsEmail)({}, { message: 'Please enter a valid email address' }),
-    (0, class_validator_1.IsNotEmpty)({ message: 'Email is required' }),
+    (0, swagger_1.ApiProperty)({
+        example: "user@danain.com",
+        description: "User email address",
+    }),
+    (0, class_validator_1.IsEmail)({}, { message: "Please enter a valid email address" }),
+    (0, class_validator_1.IsNotEmpty)({ message: "Email is required" }),
     __metadata("design:type", String)
 ], RegisterDto.prototype, "email", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'password123', description: 'Password (minimum 6 characters)' }),
+    (0, swagger_1.ApiProperty)({
+        example: "password123",
+        description: "Password (minimum 6 characters)",
+    }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)({ message: 'Password is required' }),
-    (0, class_validator_1.MinLength)(6, { message: 'Password must be at least 6 characters long' }),
+    (0, class_validator_1.IsNotEmpty)({ message: "Password is required" }),
+    (0, class_validator_1.MinLength)(6, { message: "Password must be at least 6 characters long" }),
     __metadata("design:type", String)
 ], RegisterDto.prototype, "password", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'John Doe', description: 'User full name', required: false }),
+    (0, swagger_1.ApiProperty)({
+        example: "John Doe",
+        description: "User full name",
+        required: false,
+    }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)

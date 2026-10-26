@@ -20,7 +20,7 @@ class PaginationQueryDto {
 exports.PaginationQueryDto = PaginationQueryDto;
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
-        description: 'Page number (minimum 1)',
+        description: "Page number (minimum 1)",
         default: 1,
     }),
     (0, class_validator_1.IsOptional)(),
@@ -31,7 +31,7 @@ __decorate([
 ], PaginationQueryDto.prototype, "page", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
-        description: 'Number of items per page (maximum 100)',
+        description: "Number of items per page (maximum 100)",
         default: 10,
     }),
     (0, class_validator_1.IsOptional)(),

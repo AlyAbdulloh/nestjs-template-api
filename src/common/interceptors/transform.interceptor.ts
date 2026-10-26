@@ -3,9 +3,9 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 export interface Response<T> {
   success: boolean;
@@ -16,7 +16,9 @@ export interface Response<T> {
 }
 
 @Injectable()
-export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> {
+export class TransformInterceptor<T>
+  implements NestInterceptor<T, Response<T>>
+{
   intercept(
     context: ExecutionContext,
     next: CallHandler,
@@ -27,18 +29,26 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
     return next.handle().pipe(
       map((data) => {
         // If data contains meta and data properties, format it for pagination
-        if (data && typeof data === 'object' && 'data' in data && 'meta' in data) {
+        if (
+          data &&
+          typeof data === "object" &&
+          "data" in data &&
+          "meta" in data
+        ) {
           return {
             success: true,
             statusCode,
-            message: (data as any).message || 'Request successful',
+            message: (data as any).message || "Request successful",
             data: (data as any).data,
             meta: (data as any).meta,
           };
         }
 
-        const hasMessage = data && typeof data === 'object' && 'message' in data;
-        const message = hasMessage ? (data as any).message : 'Request successful';
+        const hasMessage =
+          data && typeof data === "object" && "message" in data;
+        const message = hasMessage
+          ? (data as any).message
+          : "Request successful";
 
         let responseData = data;
         if (hasMessage) {
@@ -47,7 +57,12 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
         }
 
         // If responseData is an object that contains only 'data', unwrap it to avoid double nesting
-        if (responseData && typeof responseData === 'object' && 'data' in responseData && Object.keys(responseData).length === 1) {
+        if (
+          responseData &&
+          typeof responseData === "object" &&
+          "data" in responseData &&
+          Object.keys(responseData).length === 1
+        ) {
           responseData = responseData.data;
         }
 
